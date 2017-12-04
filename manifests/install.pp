@@ -56,4 +56,37 @@ class xd7mastercontroller::install inherits xd7mastercontroller {
 	  require => File["C:\\Program Files\\WindowsPowerShell\\Modules\\sqlserver_powershell_21.0.17199.zip"]
   }
 
+  #Install IIS addons required for Citrix XML service offloading to IIS.
+  dsc_file{ 'IISaddons':
+		dsc_destinationpath => 'C:\IISaddons',
+		dsc_type => 'Directory',
+		dsc_ensure => 'Present'  
+  }
+  
+  file{ "C:\\IISaddons\\iis_rewrite_amd64_en-US.msi":
+		source => 'puppet:///modules/xd7mastercontroller/iis_rewrite_amd64_en-US.msi',
+		source_permissions => ignore,
+    require => File['IISaddons']
+  }->
+  
+  dsc_package{'iis_rewrite_amd64_en-US':
+    dsc_ensure    => 'Present',
+    dsc_name      => 'IIS URL Rewrite Module 2',
+    dsc_productid => '38D32370-3A31-40E9-91D0-D236F47E3C4A',
+    dsc_path      => 'C:\\IISaddons\\iis_rewrite_amd64_en-US.msi',
+  }
+  
+  file{ "C:\\IISaddons\\iis_requestRouter_amd64.msi":
+    source => 'puppet:///modules/xd7mastercontroller/iis_requestRouter_amd64.msi',
+    source_permissions => ignore,
+    require => File['IISaddons']
+  }->
+  
+  dsc_package{'iis_rewrite_amd64_en-US':
+    dsc_ensure    => 'Present',
+    dsc_name      => 'Microsoft Application Request Routing 3.0',
+    dsc_productid => '279B4CB0-A213-4F94-B224-19D6F5C59942',
+    dsc_path      => 'C:\\IISaddons\\iis_requestRouter_amd64.msi',
+  }
+  
 }
