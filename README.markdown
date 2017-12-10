@@ -1,10 +1,10 @@
 # xd7mastercontroller #
 
-This modules install a fully working Citrix 7.x Delivery Controller, including Citrix site creation and administrator rights setup.
+This modules install an enterprise production grade Citrix 7.x Delivery Controller, including Citrix site creation and administrator rights setup.
 
 The following options are available for a production-grade installation :
 - Fault tolerance : AlwaysOn database membership activation for Citrix databases created by the package
-- Sécurity : SSL configuration to secure communications with the Citrix XML service
+- Sécurity : SSL configuration to secure communications with the Citrix XML Broker Service
 
 ## Integration informations
 The Citrix databases will be installed in the default MSSQLSERVER SQL Server instance. This module does not provide the capability to install the databases in another SQL intance.

@@ -1,5 +1,5 @@
 {
-  "author": "citrixdeployment",
+  "author": "virtualdesktopdevops",
   "dependencies": [
 	{ 
 		"name": "reidmv/unzip", 
@@ -15,7 +15,7 @@
 	}
   ],
   "license": "Apache-2.0",
-  "name": "citrixdeployment-xd7mastercontroller",
+  "name": "virtualdesktopdevops-xd7mastercontroller",
   "operatingsystem_support": [
     {
       "operatingsystem": "windows",
@@ -25,15 +25,15 @@
       ]
     }
   ],
-  "project_page": "https://www.citrixdeployment.com",
+  "project_page": "http://www.virtualdesktopdevops.com",
   "requirements": [
   	{
       "name": "puppet",
       "version_requirement": ">= 3.8.0 < 6.0.0"
     }
   ],
-  "source": "https://www.citrixdeployment.com",
-  "summary": "Xendesktop 7.x Delivery Controller & site creation",
+  "source": "http://www.virtualdesktopdevops.com/",
+  "summary": "Xendesktop 7.x Delivery Controller installation & site creation",
   "tags": [
     "powershell",
     "dsc",
