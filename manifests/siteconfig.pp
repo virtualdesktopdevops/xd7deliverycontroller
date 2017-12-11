@@ -1,6 +1,6 @@
 class xd7mastercontroller::siteconfig inherits xd7mastercontroller {
    
-    #Databases creation
+  #Databases creation
 	dsc_xd7database{ 'XD7SiteDatabase':
 	  dsc_sitename => $sitename,
 	  dsc_databaseserver => $databaseserver,
@@ -77,6 +77,21 @@ class xd7mastercontroller::siteconfig inherits xd7mastercontroller {
       dsc_members => $svc_username,
       dsc_psdscrunascredential => {'user' => $svc_username, 'password' => $svc_password},
       require => [ Dsc_xd7site['XD7Site'] , Dsc_xd7administrator['PuppetServiceAccountCitrixAdmin'] ]
+  }
+  
+  #Trust request sent to XML service
+	dsc_script{ 'CitrixBrokerServiceSSL':
+    dsc_getscript => 'Add-PSSnapin Citrix*
+	   Return @{ Result = [bool]$(Get-BrokerSite | fl TrustRequestsSentToTheXmlServicePort) }',
+    dsc_testscript => 'Add-PSSnapin Citrix*
+	   If (Get-BrokerSite | fl TrustRequestsSentToTheXmlServicePort) {
+	     Return $true
+	   } Else {
+       Return $false
+	   }',
+    dsc_setscript => 'Add-PSSnapin Citrix*
+	   Set-BrokerSite -TrustRequestsSentToTheXmlServicePort $true',
+    require => Dsc_xd7site['XD7Site']
   }
 	
 }
