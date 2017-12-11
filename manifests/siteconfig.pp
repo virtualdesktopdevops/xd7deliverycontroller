@@ -96,20 +96,5 @@ class xd7mastercontroller::siteconfig inherits xd7mastercontroller {
 	dsc_psdscrunascredential => {'user' => $svc_username, 'password' => $svc_password},
     require => Dsc_xd7site['XD7Site']
   }
-  
-  #Trust request sent to XML service
-	dsc_script{ 'CitrixBrokerServiceSSL':
-    dsc_getscript => 'Add-PSSnapin Citrix*
-	   Return @{ Result = [bool]$(Get-BrokerSite | fl TrustRequestsSentToTheXmlServicePort) }',
-    dsc_testscript => 'Add-PSSnapin Citrix*
-	   If (Get-BrokerSite | fl TrustRequestsSentToTheXmlServicePort) {
-	     Return $true
-	   } Else {
-       Return $false
-	   }',
-    dsc_setscript => 'Add-PSSnapin Citrix*
-	   Set-BrokerSite -TrustRequestsSentToTheXmlServicePort $true',
-    require => Dsc_xd7site['XD7Site']
-  }
 	
 }
