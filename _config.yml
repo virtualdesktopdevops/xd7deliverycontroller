@@ -1,1 +1,14 @@
+title: XenDesktop 7 Delivery Controller (master) puppet module
+description: Puppet module installing an enterprise production grade Citrix XenDesktop 7.x Delivery Controller, including Citrix site creation and administrator rights setup.
+google_site_verification: R71XDERzPOp9lUudi8X6iKrpcoIgDG_1HzRMz_TMaDY
+google_analytics: UA-12767493-6
 theme: jekyll-theme-slate
+show_downloads: true
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-redirect-from
+  - jekyll-mentions
+jekyll-mentions:
+  base_url: http://www.virtualdesktopdevops.com/puppet-modules/xendesktop-delivery-controller.html
