@@ -50,7 +50,7 @@ class xd7mastercontroller::databasehighavailability inherits xd7mastercontroller
 			#require => Dsc_sqldatabaserecoverymodel['LoggingDatabaseRecoveryModel']
 		}
 
-    dsc_sqlagdatabase{'MonitorDatabaseAlwaysOn':
+		dsc_sqlagdatabase{'MonitorDatabaseAlwaysOn':
 			dsc_databasename => $monitordatabasename,
 			dsc_availabilitygroupname => $sqlavailabilitygroup,
 			dsc_servername => $databaseserver,
