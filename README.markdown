@@ -16,7 +16,7 @@ The SSL certificate provided needs to be a password protected p12/pfx certificat
 The module can be installed on a Standard, Datacenter version of Windows 2012R2 or Windows 2016. **Core version is not supported by Citrix for delivery Controller installation**.
 
 ## Usage
-- **svc_username** : (string) Privileged account used by Puppet for installing the software and the Xendesktop Site (cred_ssp server and client, SQL server write access, local administrator privilèges needed) 
+- **svc_username** : (string) Privileged account used by Puppet for installing the software and the Xendesktop Site (cred_ssp server and client, SQL server write access, local administrator privilèges needed)
 - **svc_password** : (string) Password of the privileged account. Should be encrypted with hiera-eyaml.
 - **sitename** : (string) Name of the Xendesktop site
 - **databaseserver** : (string) FQDN of the SQL server used for citrix database hosting. If using a AlwaysOn SQL cluster, use the Listener FQDN.
@@ -26,7 +26,6 @@ The module can be installed on a Standard, Datacenter version of Windows 2012R2 
 - **monitordatabasename** : (string) Name of the citrix monitor database to be created
 - **sourcepath** : (string) Path of a folder containing the Xendesktop 7.x installer (unarchive the ISO image in this folder).
 - **xd7administrator** : (string) ActiveDirectory user or group which will be granted Citrix Administrator rights.
-- **domainNetbiosName** : (string) : Domain NETBIOS name.
 - **sqlalwayson** : (boolean) : true or false. Activate database AlwaysOn availability group membership ? Default is false. Needs to be true for a production grade environment
 - **sqlavailabilitygroup** : (string) (optionnal if sqlalwayson = false) : Name of the SQL AlwaysOn availability group.
 - **sqldbbackuppath** :  (string) (optionnal if sqlalwayson = false) : UNC path of a writable network folder to backup/restore databases during AlwaysOn availability group membership configuration. needs to be writable from the sql server nodes.
@@ -50,7 +49,6 @@ node 'CXDC' {
 	  monitordatabasename => 'MONITOR_DB',
 	  sourcepath => '\\fileserver\xendesktop715',
 	  xd7administrator => 'TESTLAB\Domain Admins',
-	  domainNetbiosName=> 'TESTLAB',
 	  sqlalwayson => true,
 	  sqlavailabilitygroup => 'CLSDB01',
 	  sqldbbackuppath => '\\fileserver\backup\sql',
@@ -61,5 +59,3 @@ node 'CXDC' {
 	}
 }
 ~~~
-
-

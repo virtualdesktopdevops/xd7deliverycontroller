@@ -21,7 +21,6 @@ class xd7mastercontroller (
 	$monitordatabasename='CitrixMonitorDB',
 	$sourcepath,
 	$xd7administrator,
-	$domainNetbiosName,
 	$sqlalwayson = false,
 	$sqlavailabilitygroup = '', #Name of the SQL Server Availability group
 	$sqldbbackuppath = '',
@@ -40,9 +39,8 @@ class xd7mastercontroller (
 	Class['::xd7mastercontroller::siteconfig'] ->
 	#Class['::xd7mastercontroller::databasehighavailability'] ->
 	Class['::xd7mastercontroller::sslconfig']
-	
+
 	reboot { 'dsc_reboot':
 	 when    => pending
 	}
 }
-
