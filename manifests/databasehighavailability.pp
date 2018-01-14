@@ -35,7 +35,7 @@ class xd7mastercontroller::databasehighavailability inherits xd7mastercontroller
 			dsc_availabilitygroupname => $sqlavailabilitygroup,
 			dsc_servername => $databaseserver,
 			dsc_instancename => 'MSSQLSERVER',
-			dsc_backuppath => $sqldbbackuppath,
+			dsc_backuppath => "\\${sqldbbackuppath}",
 			dsc_psdscrunascredential => {'user' => $svc_username, 'password' => $svc_password},
 			#require => Dsc_sqldatabaserecoverymodel['SiteDatabaseRecoveryModel']
 		}
@@ -45,7 +45,7 @@ class xd7mastercontroller::databasehighavailability inherits xd7mastercontroller
 			dsc_availabilitygroupname => $sqlavailabilitygroup,
 			dsc_servername => $databaseserver,
 			dsc_instancename => 'MSSQLSERVER',
-			dsc_backuppath => $sqldbbackuppath,
+			dsc_backuppath => "\\${sqldbbackuppath}",
 			dsc_psdscrunascredential => {'user' => $svc_username, 'password' => $svc_password},
 			#require => Dsc_sqldatabaserecoverymodel['LoggingDatabaseRecoveryModel']
 		}
@@ -55,7 +55,7 @@ class xd7mastercontroller::databasehighavailability inherits xd7mastercontroller
 			dsc_availabilitygroupname => $sqlavailabilitygroup,
 			dsc_servername => $databaseserver,
 			dsc_instancename => 'MSSQLSERVER',
-			dsc_backuppath => $sqldbbackuppath,
+			dsc_backuppath => "\\${sqldbbackuppath}",
 			dsc_psdscrunascredential => {'user' => $svc_username, 'password' => $svc_password},
 			#require => Dsc_sqldatabaserecoverymodel['MonitorDatabaseRecoveryModel']
 		}
