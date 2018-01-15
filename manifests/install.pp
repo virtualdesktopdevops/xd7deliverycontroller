@@ -26,7 +26,7 @@ class xd7mastercontroller::install inherits xd7mastercontroller {
   #Install Delivery Controller
 	dsc_xd7features { 'XD7DeliveryController':
 	 dsc_issingleinstance => 'Yes',
-	 dsc_role => [Studio, Controller],
+	 dsc_role => ['Studio', 'Controller'],
 	 dsc_sourcepath => $sourcepath,
 	 dsc_ensure => 'present',
 	 require => Dsc_windowsfeature['iis'],

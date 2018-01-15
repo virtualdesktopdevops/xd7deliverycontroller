@@ -42,7 +42,7 @@ class xd7mastercontroller::sslconfig inherits xd7mastercontroller {
       ensure => present,
       type   => 'dword',
       data   => '443',
-      require => Dsc_xd7features ['XD7DeliveryController']
+      require => Dsc_xd7features['XD7DeliveryController']
     }
   }
 }
