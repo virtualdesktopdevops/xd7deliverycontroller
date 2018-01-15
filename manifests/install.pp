@@ -5,16 +5,32 @@ class xd7mastercontroller::install inherits xd7mastercontroller {
 	 when => refreshed
 	}
 
-	dsc_xcredssp{ 'Server':
-	 dsc_ensure => 'Present',
-	 dsc_role => 'Server',
-	 notify => Reboot['after_run']
+	#Implemented a GPO check to prevent an endless reboot loop when CredSSP is configured via a GPO
+	if (!$credsspservicegpo) {
+		dsc_xcredssp{ 'Server':
+		 dsc_ensure => 'Present',
+		 dsc_role => 'Server',
+		 notify => Reboot['after_run']
+		}
+	}
+	else {
+		notify { 'CredSSPServic#Implemented a GPO check to prevent an endless reboot loop when CredSSP is configured via a GPOeAlreadyConfigured':
+			message => 'CredSSP already configured by GPO. Unauthorized to overide GPO configuration. Please check that CredSSP service is allowed on this Computer.'
+		}
 	}
 
-	dsc_xcredssp{ 'Client':
-	 dsc_ensure => 'Present',
-	 dsc_role => 'Client',
-	 dsc_delegatecomputers => '*'
+	#Implemented a GPO check to prevent an endless reboot loop when CredSSP is configured via a GPO
+	if (!$credsspclientgpo) {
+		dsc_xcredssp{ 'Client':
+		 dsc_ensure => 'Present',
+		 dsc_role => 'Client',
+		 dsc_delegatecomputers => '*'
+		}
+	}
+	else {
+		notify { 'CredSSPClientAlreadyConfigured':
+			message => 'CredSSP already configured by GPO. Unauthorized to overide GPO configuration. Please check that CredSSP client is allowed on this Computer.'
+		}
 	}
 
 	#Ensure IIS is not installed on the system to avoid conflicts with Broker Service
