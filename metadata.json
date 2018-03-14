@@ -1,16 +1,16 @@
 {
   "author": "virtualdesktopdevops",
   "dependencies": [
-	{ 
-		"name": "reidmv/unzip", 
+	{
+		"name": "reidmv/unzip",
 		"version_requirement": ">= 0.1.2"
 	},
-	{ 
-		"name": "puppetlabs/registry", 
+	{
+		"name": "puppetlabs/registry",
 		"version_requirement": ">= 1.1.4"
 	},
-	{ 
-		"name": "puppetlabs/dsc", 
+	{
+		"name": "puppetlabs/dsc",
 		"version_requirement": ">= 1.4.0"
 	}
   ],
@@ -32,14 +32,18 @@
       "version_requirement": ">= 3.8.0 < 6.0.0"
     }
   ],
-  "source": "http://www.virtualdesktopdevops.com/",
-  "summary": "Xendesktop 7.x Delivery Controller installation & site creation",
+  "source": "https://virtualdesktopdevops.github.io/xd7mastercontroller/",
+  "issues_url": "https://github.com/virtualdesktopdevops/xd7mastercontroller/issues",
+  "summary": "Citrix Xendesktop 7.x Delivery Controller installation & site creation",
   "tags": [
     "powershell",
     "dsc",
     "xendesktop",
     "citrix",
-    "delivery-controller"
+    "delivery",
+    "controller",
+    "ssl",
+    "alwayson"
   ],
-  "version": "1.0.0"
+  "version": "2.0.0"
 }
