@@ -1,6 +1,6 @@
-# Citrix Xendesktop 7 delivery controller Puppet Module #
+# Citrix XenDesktop 7 delivery controller Puppet Module #
 
-This modules install an enterprise production grade Citrix 7.x Delivery Controller, including Citrix site creation and administrator rights setup.
+Puppet module installing a production grade Citrix XenDesktop 7.x Delivery Controller, including XenDesktop site creation, high availability configuration and administrator rights setup.
 
 The following options are available for a production-grade installation :
 - Fault tolerance : AlwaysOn database membership activation for Citrix databases created by the package
@@ -14,7 +14,7 @@ This module requires SQLServer powershell module v21.0.17199. The module will in
 - From Powershell Gallery if **sqlservermodulesource** parameter is set to **internet**
 - From an enterprise location if **sqlservermodulesource** parameter is set to **offline**. In this case, the ZIP file containing the SQLServer v21.0.17199 (_sqlserver_powershell_21.0.17199.zip_) has to be manually downloaded from Powershell Gallery using the `Save-Module -Name SqlServer -Path <path> -RequiredVersion 21.0.17199` powershell command.
 
-This module requires a custom version of the puppetlabs-dsc module compiled with ...
+This module requires a custom version of the puppetlabs-dsc module compiled with [XenDesktop Powershell DSC Resource](https://github.com/VirtualEngine/XenDesktop7) as a dependency. Ready to use module provided on [Github](https://github.com/virtualdesktopdevops/puppetlabs-dsc/tree/1.5.0_custom).
 
 ## Change log ##
 
@@ -33,47 +33,71 @@ Migrated puppet example code in README.md to future parser syntax (4.x). Impact 
 
 ## Usage ##
 * **`[String]` setup_svc_username** _(Required)_: Privileged account used by Puppet for installing the software and the Xendesktop Site (cred_ssp server and client, SQL server write access, local administrator privilèges needed)
-- **setup_svc_password** : (string) Password of the privileged account. Should be encrypted with hiera-eyaml.
-- **sitename** : (string) Name of the Xendesktop site
-- **databaseserver** : (string) FQDN of the SQL server used for citrix database hosting. If using a AlwaysOn SQL cluster, use the Listener FQDN.
-- **licenceserver** : (string) FQDN of the Citrix Licence server.
-- **sitedatabasename** : (string) Name of the citrix site database to be created
-- **loggingdatabasename** : (string) Name of the citrix logging database to be created
-- **monitordatabasename** : (string) Name of the citrix monitor database to be created
-- **sourcepath** : (string) Path of a folder containing the Xendesktop 7.x installer (unarchive the ISO image in this folder). Has to be prefixed with \\\\ instead of the classical \\ if using UNC Path and Puppet >= 4.x or Puppet 3.x future parser.
-- **xd7administrator** : (string) ActiveDirectory user or group which will be granted Citrix Administrator rights.
-- **sqlalwayson** : (boolean) : true or false. Activate database AlwaysOn availability group membership ? Default is false. Needs to be true for a production grade environment
-- **sqlavailabilitygroup** : (string) (optionnal if sqlalwayson = false) : Name of the SQL AlwaysOn availability group.
-- **sqldbbackuppath** :  (string) (optionnal if sqlalwayson = false) : UNC path of a writable network folder to backup/restore databases during AlwaysOn availability group membership configuration. needs to be writable from the sql server nodes. Has to be prefixed with \\\\ instead of the classical \\ if using Puppet >= 4.x or Puppet 3.x future parser.
-* **`[String]` sqlservermodulesource** _(Optional, [internet,offline])_: Source of SQLServer Powershell module v21.0.17199 (see requirements at the beginning of this readme).  Valid values are **internet** or **offline**. Default is 'internet'.
+- **`[String]` setup_svc_password** _(Required)_: Password of the privileged account. Should be encrypted with hiera-eyaml.
+- **`[String]` sitename** _(Required)_: Name of the Xendesktop site
+- **`[String]` role** _(Required `[primary|secondary]`)_: Needs to be 'primary' for the first Citrix Delivery Controller of a site to initialize the databases and the Xendesktop site. Configure as 'secondary' for all other delivery Controllers of the site as they will join an existing Xendesktop site.
+- **`[String]` site_primarycontroller** _(Optional if role='primary')_: Primary controller of the existing Xendesktop site to which the newly configured Delivery Controller has to be joined.
+- **`[String]` databaseserver** _(Required)_: FQDN of the SQL server used for citrix database hosting. If using a AlwaysOn SQL cluster, use the Listener FQDN.
+- **`[String]` licenceserver** _(Required)_: FQDN of the Citrix Licence server.
+- **`[String]` sitedatabasename** _(Required)_: Name of the citrix site database to be created
+- **`[String]` loggingdatabasename** _(Required)_: Name of the citrix logging database to be created
+- **`[String]` monitordatabasename** _(Required)_: Name of the citrix monitor database to be created
+- **`[String]` sourcepath** _(Required)_: Path of a folder containing the Xendesktop 7.x installer (unarchive the ISO image in this folder). Has to be prefixed with \\\\ instead of the classical \\ if using UNC Path and Puppet >= 4.x or Puppet 3.x future parser.
+- **`[String]` xd7administrator** _(Required)_: ActiveDirectory user or group which will be granted Citrix Administrator rights.
+- **`[Boolean]` sqlalwayson** _(Optional, default is false)_: Activate database AlwaysOn availability group membership ? Default is false. Needs to be true for a production grade environment
+- **`[String]` sqlavailabilitygroup** _(Optional if sqlalwayson = false)_: Name of the SQL AlwaysOn availability group.
+- **`[String]` sqldbbackuppath** _(Optional if sqlalwayson = false)_: UNC path of a writable network folder to backup/restore databases during AlwaysOn availability group membership configuration. needs to be writable from the sql server nodes. Has to be prefixed with \\\\ instead of the classical \\ if using Puppet >= 4.x or Puppet 3.x future parser.
+* **`[String]` sqlservermodulesource** _(Optional, `[internet|offline]`)_: Source of SQLServer Powershell module v21.0.17199 (see requirements at the beginning of this readme).  Valid values are **internet** or **offline**. Default is 'internet'.
 * **`[String]` sqlservermodulesourcepath** _(Optional if sqlservermodulesource = 'internet' )_: Path of the SQLServer Powershell module v21.0.17199 ZIP file. Can be a local or an UNC path.
-- **https** : (boolean) : true or false. Deploy SSL certificate and activate SSL access to Citrix XML service ? Default : false
-- **sslCertificateSourcePath** : (string) Location of the SSL certificate (p12 / PFX format with private key). Can be local folder, UNC path, HTTP URL). Has to be prefixed with \\\\ instead of the classical \\ if using UNC Path and Puppet >= 4.x or Puppet 3.x future parser.
-- **sslCertificatePassword** : (string) Password protecting the p12/pfx SSL certificate file.
-- **sslCertificateThumbprint** : (string) Thumbprint of the SSL certificate (available in the SSL certificate).
+- **`[Boolean]` https** _(Optional, default is false)_: Deploy SSL certificate and activate SSL access to Citrix XML service ? Default : false
+- **`[String]` sslCertificateSourcePath** _(Optional if https = false)_: Location of the SSL certificate (p12 / PFX format with private key). Can be local folder, UNC path, HTTP URL). Has to be prefixed with \\\\ instead of the classical \\ if using UNC Path and Puppet >= 4.x or Puppet 3.x future parser.
+- **`[String]` sslCertificatePassword** _(Optional if https = false)_: Password protecting the p12/pfx SSL certificate file.
+- **`[String]` sslCertificateThumbprint** _(Optional if https = false)_: Thumbprint of the SSL certificate (available in the SSL certificate).
 
-## Installing a Citrix Delivery Controller
+## Installing a Citrix Delivery Controller ##
 
 ~~~puppet
-node 'CXDC' {
+node 'CXDC01' {
 	class{'xd7mastercontroller':
-	  setup_svc_username => 'TESTLAB\svc-puppet',
-	  setup_svc_password => 'P@ssw0rd',
-	  sitename => 'XD7TestSite',
-	  databaseserver => 'CLSDB01LI.TESTLAB.COM',
-	  licenceserver => 'LICENCE.TESTLAB.COM',
-	  sitedatabasename => 'SITE_DB',
-	  loggingdatabasename => 'LOG_DB',
-	  monitordatabasename => 'MONITOR_DB',
-	  sourcepath => '\\\\fileserver\xendesktop715',
-	  xd7administrator => 'TESTLAB\Domain Admins',
-	  sqlalwayson => true,
-	  sqlavailabilitygroup => 'CLSDB01',
-	  sqldbbackuppath => '\\\\fileserver\backup\sql',
-	  https => true,
-	  sslCertificateSourcePath => '\\\\fileserver\ssl\cxdc.pfx',
-	  sslCertificatePassword => 'P@ssw0rd',
-	  sslCertificateThumbprint => '44cce73845feef4da4d369a37386c862eb3bd4e1'  
+		setup_svc_username       => 'TESTLAB\svc-puppet',
+		setup_svc_password       => 'P@ssw0rd',
+		sitename                 => 'XD7TestSite',
+		role                     => 'primary'
+		databaseserver           => 'CLSDB01LI.TESTLAB.COM',
+		licenceserver            => 'LICENCE.TESTLAB.COM',
+		sitedatabasename         => 'SITE_DB',
+		loggingdatabasename      => 'LOG_DB',
+		monitordatabasename      => 'MONITOR_DB',
+		sourcepath               => '\\\\fileserver\xendesktop715',
+		xd7administrator         => 'TESTLAB\Domain Admins',
+		sqlalwayson              => true,
+		sqlavailabilitygroup     => 'CLSDB01',
+		sqldbbackuppath          => '\\\\fileserver\backup\sql',
+		https                    => true,
+		sslCertificateSourcePath => '\\\\fileserver\ssl\cxdc.pfx',
+		sslCertificatePassword   => 'P@ssw0rd',
+		sslCertificateThumbprint => '44cce73845feef4da4d369a37386c862eb3bd4e1'  
+	}
+}
+
+node 'CXDC02' {
+	class{'xd7mastercontroller':
+		setup_svc_username       => 'TESTLAB\svc-puppet',
+		setup_svc_password       => 'P@ssw0rd',
+		sitename                 => 'XD7TestSite',
+		role                     => 'secondary',
+		site_primarycontroller   => 'CXDC01',
+		databaseserver           => 'CLSDB01LI.TESTLAB.COM',
+		licenceserver            => 'LICENCE.TESTLAB.COM',
+		sitedatabasename         => 'SITE_DB',
+		loggingdatabasename      => 'LOG_DB',
+		monitordatabasename      => 'MONITOR_DB',
+		sourcepath               => '\\\\fileserver\xendesktop715',
+		xd7administrator         => 'TESTLAB\Domain Admins',
+		https                    => true,
+		sslCertificateSourcePath => '\\\\fileserver\ssl\cxdc.pfx',
+		sslCertificatePassword   => 'P@ssw0rd',
+		sslCertificateThumbprint => '44cce73845feef4da4d369a37386c862eb3bd4e1'  
 	}
 }
 ~~~

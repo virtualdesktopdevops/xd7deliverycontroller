@@ -1,7 +1,7 @@
 #Class configuring SQL Server AlwaysOn High-Availability feature for Citrix databases
 class xd7mastercontroller::databasehighavailability inherits xd7mastercontroller {
 
-  if $xd7mastercontroller::sqlalwayson {
+  if ($xd7mastercontroller::role == 'primary') and ($xd7mastercontroller::sqlalwayson) {
     #Recovery mode configuration
     dsc_sqldatabaserecoverymodel{'SiteDatabaseRecoveryModel':
       dsc_name                 => $xd7mastercontroller::sitedatabasename,
