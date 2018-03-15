@@ -1,6 +1,6 @@
 #Class configuring SSL encryption for Citrix Broker access
-class xd7mastercontroller::sslconfig inherits xd7mastercontroller {
-  if $xd7mastercontroller::https {
+class xd7deliverycontroller::sslconfig inherits xd7deliverycontroller {
+  if $xd7deliverycontroller::https {
     reboot { 'after_sslconfig':
       apply => finished,
       when  => refreshed
@@ -8,18 +8,18 @@ class xd7mastercontroller::sslconfig inherits xd7mastercontroller {
 
     #Download SSL certificate
     dsc_file{ 'SSLCert':
-      dsc_sourcepath      => $xd7mastercontroller::sslcertificatesourcepath,
+      dsc_sourcepath      => $xd7deliverycontroller::sslcertificatesourcepath,
       dsc_destinationpath => 'c:\SSL\cert.pfx',
       dsc_type            => 'File'
     }
 
     #Load SSL certificate in Local Computer personal certificate store
   ->dsc_xpfximport{ 'ImportSSLCert':
-      dsc_thumbprint => $xd7mastercontroller::sslcertificatethumbprint,
+      dsc_thumbprint => $xd7deliverycontroller::sslcertificatethumbprint,
       dsc_path       => 'c:\SSL\cert.pfx',
       dsc_location   => 'LocalMachine',
       dsc_store      => 'My',
-      dsc_credential => {'user' => 'cert', 'password' => $xd7mastercontroller::sslcertificatepassword },
+      dsc_credential => {'user' => 'cert', 'password' => $xd7deliverycontroller::sslcertificatepassword },
       require        => Dsc_file['SSLCert']
     }
 
@@ -34,7 +34,7 @@ class xd7mastercontroller::sslconfig inherits xd7mastercontroller {
             }',
       dsc_setscript  => "\$brokerservice = get-wmiobject -class Win32_Product | Where-Object {\$_.name -Like \"*Broker Service*\"}
           \$guid = \$brokerservice.IdentifyingNumber
-          netsh http add sslcert ipport=0.0.0.0:443 certhash=${$xd7mastercontroller::sslcertificatethumbprint} appid=\$guid",
+          netsh http add sslcert ipport=0.0.0.0:443 certhash=${$xd7deliverycontroller::sslcertificatethumbprint} appid=\$guid",
       notify         => Reboot['after_sslconfig']
     }
 

@@ -1,6 +1,6 @@
-# Class: xd7mastercontroller
+# Class: xd7deliverycontroller
 #
-# This module manages xd7mastercontroller
+# This module manages xd7deliverycontroller
 #
 # Parameters: none
 #
@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class xd7mastercontroller (
+class xd7deliverycontroller (
   String $setup_svc_username,
   String $setup_svc_password,
   String $sitename,
@@ -35,15 +35,15 @@ class xd7mastercontroller (
 )
 
 {
-  contain xd7mastercontroller::install
-  contain xd7mastercontroller::siteconfig
-  contain xd7mastercontroller::databasehighavailability
-  contain xd7mastercontroller::sslconfig
+  contain xd7deliverycontroller::install
+  contain xd7deliverycontroller::siteconfig
+  contain xd7deliverycontroller::databasehighavailability
+  contain xd7deliverycontroller::sslconfig
 
-  Class['::xd7mastercontroller::install']
-  ->Class['::xd7mastercontroller::siteconfig']
-  #->Class['::xd7mastercontroller::databasehighavailability']
-  ->Class['::xd7mastercontroller::sslconfig']
+  Class['::xd7deliverycontroller::install']
+  ->Class['::xd7deliverycontroller::siteconfig']
+  #->Class['::xd7deliverycontroller::databasehighavailability']
+  ->Class['::xd7deliverycontroller::sslconfig']
 
   reboot { 'dsc_reboot':
     when    => pending

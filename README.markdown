@@ -58,7 +58,7 @@ Migrated puppet example code in README.md to future parser syntax (4.x). Impact 
 
 ~~~puppet
 node 'CXDC01' {
-	class{'xd7mastercontroller':
+	class{'xd7deliverycontroller':
 		setup_svc_username       => 'TESTLAB\svc-puppet',
 		setup_svc_password       => 'P@ssw0rd',
 		sitename                 => 'XD7TestSite',
@@ -81,7 +81,7 @@ node 'CXDC01' {
 }
 
 node 'CXDC02' {
-	class{'xd7mastercontroller':
+	class{'xd7deliverycontroller':
 		setup_svc_username       => 'TESTLAB\svc-puppet',
 		setup_svc_password       => 'P@ssw0rd',
 		sitename                 => 'XD7TestSite',

@@ -15,7 +15,7 @@
 	}
   ],
   "license": "Apache-2.0",
-  "name": "virtualdesktopdevops-xd7mastercontroller",
+  "name": "virtualdesktopdevops-xd7deliverycontroller",
   "operatingsystem_support": [
     {
       "operatingsystem": "windows",
@@ -32,8 +32,8 @@
       "version_requirement": ">= 3.8.0 < 6.0.0"
     }
   ],
-  "source": "https://virtualdesktopdevops.github.io/xd7mastercontroller/",
-  "issues_url": "https://github.com/virtualdesktopdevops/xd7mastercontroller/issues",
+  "source": "https://virtualdesktopdevops.github.io/xd7deliverycontroller/",
+  "issues_url": "https://github.com/virtualdesktopdevops/xd7deliverycontroller/issues",
   "summary": "Puppet module installing a production grade Citrix XenDesktop 7.x Delivery Controller, including XenDesktop site creation, high availability configuration and administrator rights setup.",
   "tags": [
     "powershell",

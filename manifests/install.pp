@@ -1,5 +1,5 @@
 #Class installing Citrix XenDesktop Delivery Controller and SQLServer powershell module
-class xd7mastercontroller::install inherits xd7mastercontroller {
+class xd7deliverycontroller::install inherits xd7deliverycontroller {
 
   reboot { 'after_run':
     apply => immediately,
@@ -46,14 +46,14 @@ class xd7mastercontroller::install inherits xd7mastercontroller {
   dsc_xd7features { 'XD7DeliveryController':
     dsc_issingleinstance => 'Yes',
     dsc_role             => ['Studio', 'Controller'],
-    dsc_sourcepath       => $xd7mastercontroller::sourcepath,
+    dsc_sourcepath       => $xd7deliverycontroller::sourcepath,
     dsc_ensure           => 'present',
     require              => Dsc_windowsfeature['iis'],
     notify               => Reboot['after_run']
   }
 
   #Download and install SQLSERVER powershell module. Required for database high availability setup (always on citrix databases membership)
-  if ($xd7mastercontroller::sqlservermodulesource == 'internet') {
+  if ($xd7deliverycontroller::sqlservermodulesource == 'internet') {
     exec { 'InstallNuGetProviderPSGallery':
       command  => 'Install-PackageProvider -Name NuGet -Confirm:$false -Force',
       onlyif   => 'if (Get-PackageProvider -ListAvailable -Name Nuget) { exit 1 }',
@@ -68,7 +68,7 @@ class xd7mastercontroller::install inherits xd7mastercontroller {
   }
   else {
     file{ 'C:\Program Files\WindowsPowerShell\Modules\sqlserver_powershell_module.zip':
-      source             => $xd7mastercontroller::sqlservermodulesourcepath,
+      source             => $xd7deliverycontroller::sqlservermodulesourcepath,
       source_permissions => ignore,
     }
 
