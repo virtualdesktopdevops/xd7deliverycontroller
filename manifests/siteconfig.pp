@@ -123,7 +123,7 @@ class xd7deliverycontroller::siteconfig inherits xd7deliverycontroller {
   else {
     dsc_xd7waitforsite{ 'WaitForXD7Site':
       dsc_sitename               => $xd7deliverycontroller::sitename,
-      dsc_existingcontrollername => $xd7deliverycontroller::site_mastercontroller,
+      dsc_existingcontrollername => $xd7deliverycontroller::site_primarycontroller,
       dsc_credential             => {
         'user'     => $xd7deliverycontroller::setup_svc_username,
         'password' => $xd7deliverycontroller::setup_svc_password

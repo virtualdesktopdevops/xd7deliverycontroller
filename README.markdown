@@ -32,27 +32,34 @@ The module can be installed on a Standard, Datacenter version of Windows 2012R2 
 Migrated puppet example code in README.md to future parser syntax (4.x). Impact on parameters refering to remote locations (file shares) which have to be prefixed with \\\\ instead of the classical \\. This is because of Puppet >= 4.x parsing \\ as a single \ in single-quoted strings. Use parser = future in puppet 3.x /etc/puppet/puppet.conf to use this new configuration in your Puppet 3.x and prepare Puppet 4.x migration.
 
 ## Usage ##
+**Mandatory parameters :**
 * **`[String]` setup_svc_username** _(Required)_: Privileged account used by Puppet for installing the software and the Xendesktop Site (cred_ssp server and client, SQL server write access, local administrator privilèges needed)
 - **`[String]` setup_svc_password** _(Required)_: Password of the privileged account. Should be encrypted with hiera-eyaml.
+- **`[String]` sourcepath** _(Required)_: Path of a folder containing the Xendesktop 7.x installer (unarchive the ISO image in this folder). Has to be prefixed with \\\\ instead of the classical \\ if using UNC Path and Puppet >= 4.x or Puppet 3.x future parser.
 - **`[String]` sitename** _(Required)_: Name of the Xendesktop site
 - **`[String]` role** _(Required `[primary|secondary]`)_: Needs to be 'primary' for the first Citrix Delivery Controller of a site to initialize the databases and the Xendesktop site. Configure as 'secondary' for all other delivery Controllers of the site as they will join an existing Xendesktop site.
-- **`[String]` site_primarycontroller** _(Optional if role='primary')_: Primary controller of the existing Xendesktop site to which the newly configured Delivery Controller has to be joined.
-- **`[String]` databaseserver** _(Required)_: FQDN of the SQL server used for citrix database hosting. If using a AlwaysOn SQL cluster, use the Listener FQDN.
-- **`[String]` licenceserver** _(Required)_: FQDN of the Citrix Licence server.
-- **`[String]` sitedatabasename** _(Required)_: Name of the citrix site database to be created
-- **`[String]` loggingdatabasename** _(Required)_: Name of the citrix logging database to be created
-- **`[String]` monitordatabasename** _(Required)_: Name of the citrix monitor database to be created
-- **`[String]` sourcepath** _(Required)_: Path of a folder containing the Xendesktop 7.x installer (unarchive the ISO image in this folder). Has to be prefixed with \\\\ instead of the classical \\ if using UNC Path and Puppet >= 4.x or Puppet 3.x future parser.
-- **`[String]` xd7administrator** _(Required)_: ActiveDirectory user or group which will be granted Citrix Administrator rights.
+
+**Required parameters if role='primary' :**
+- **`[String]` databaseserver** _(Required if role='primary')_: FQDN of the SQL server used for citrix database hosting. If using a AlwaysOn SQL cluster, use the Listener FQDN.
+- **`[String]` licenceserver** _(Required if role='primary')_: FQDN of the Citrix Licence server.
+- **`[String]` xd7administrator** _(Required if role='primary')_: ActiveDirectory user or group which will be granted Citrix Administrator rights.
+
+**Required parameters if role='secondary' :**
+- **`[String]` site_primarycontroller** _(Required if role='secondary')_: Primary controller of the existing Xendesktop site to which the newly configured Delivery Controller has to be joined.
+
+**Optional parameters :**
+- **`[String]` sitedatabasename** _(Optional, default is CitrixSiteDB)_: Name of the citrix site database to be created
+- **`[String]` loggingdatabasename** _(Optional, default is CitrixLogDB)_: Name of the citrix logging database to be created
+- **`[String]` monitordatabasename** _(Optional, default is CitrixMonitorDB)_: Name of the citrix monitor database to be created
 - **`[Boolean]` sqlalwayson** _(Optional, default is false)_: Activate database AlwaysOn availability group membership ? Default is false. Needs to be true for a production grade environment
-- **`[String]` sqlavailabilitygroup** _(Optional if sqlalwayson = false)_: Name of the SQL AlwaysOn availability group.
-- **`[String]` sqldbbackuppath** _(Optional if sqlalwayson = false)_: UNC path of a writable network folder to backup/restore databases during AlwaysOn availability group membership configuration. needs to be writable from the sql server nodes. Has to be prefixed with \\\\ instead of the classical \\ if using Puppet >= 4.x or Puppet 3.x future parser.
+- **`[String]` sqlavailabilitygroup** _(Required if sqlalwayson = true)_: Name of the SQL AlwaysOn availability group.
+- **`[String]` sqldbbackuppath** _(Required if sqlalwayson = true)_: UNC path of a writable network folder to backup/restore databases during AlwaysOn availability group membership configuration. needs to be writable from the sql server nodes. Has to be prefixed with \\\\ instead of the classical \\ if using Puppet >= 4.x or Puppet 3.x future parser.
 * **`[String]` sqlservermodulesource** _(Optional, `[internet|offline]`)_: Source of SQLServer Powershell module v21.0.17199 (see requirements at the beginning of this readme).  Valid values are **internet** or **offline**. Default is 'internet'.
-* **`[String]` sqlservermodulesourcepath** _(Optional if sqlservermodulesource = 'internet' )_: Path of the SQLServer Powershell module v21.0.17199 ZIP file. Can be a local or an UNC path.
+* **`[String]` sqlservermodulesourcepath** _(Required if sqlservermodulesource = 'offline' )_: Path of the SQLServer Powershell module v21.0.17199 ZIP file. Can be a local or an UNC path.
 - **`[Boolean]` https** _(Optional, default is false)_: Deploy SSL certificate and activate SSL access to Citrix XML service ? Default : false
-- **`[String]` sslCertificateSourcePath** _(Optional if https = false)_: Location of the SSL certificate (p12 / PFX format with private key). Can be local folder, UNC path, HTTP URL). Has to be prefixed with \\\\ instead of the classical \\ if using UNC Path and Puppet >= 4.x or Puppet 3.x future parser.
-- **`[String]` sslCertificatePassword** _(Optional if https = false)_: Password protecting the p12/pfx SSL certificate file.
-- **`[String]` sslCertificateThumbprint** _(Optional if https = false)_: Thumbprint of the SSL certificate (available in the SSL certificate).
+- **`[String]` sslCertificateSourcePath** _(Required if https = true)_: Location of the SSL certificate (p12 / PFX format with private key). Can be local folder, UNC path, HTTP URL). Has to be prefixed with \\\\ instead of the classical \\ if using UNC Path and Puppet >= 4.x or Puppet 3.x future parser.
+- **`[String]` sslCertificatePassword** _(Required if https = true)_: Password protecting the p12/pfx SSL certificate file.
+- **`[String]` sslCertificateThumbprint** _(Required if https = true)_: Thumbprint of the SSL certificate (available in the SSL certificate).
 
 ## Installing a Citrix Delivery Controller ##
 
@@ -61,15 +68,15 @@ node 'CXDC01' {
 	class{'xd7deliverycontroller':
 		setup_svc_username       => 'TESTLAB\svc-puppet',
 		setup_svc_password       => 'P@ssw0rd',
+		sourcepath               => '\\\\fileserver\xendesktop715',
 		sitename                 => 'XD7TestSite',
 		role                     => 'primary'
 		databaseserver           => 'CLSDB01LI.TESTLAB.COM',
 		licenceserver            => 'LICENCE.TESTLAB.COM',
+		xd7administrator         => 'TESTLAB\Domain Admins',
 		sitedatabasename         => 'SITE_DB',
 		loggingdatabasename      => 'LOG_DB',
 		monitordatabasename      => 'MONITOR_DB',
-		sourcepath               => '\\\\fileserver\xendesktop715',
-		xd7administrator         => 'TESTLAB\Domain Admins',
 		sqlalwayson              => true,
 		sqlavailabilitygroup     => 'CLSDB01',
 		sqldbbackuppath          => '\\\\fileserver\backup\sql',
@@ -84,16 +91,10 @@ node 'CXDC02' {
 	class{'xd7deliverycontroller':
 		setup_svc_username       => 'TESTLAB\svc-puppet',
 		setup_svc_password       => 'P@ssw0rd',
+		sourcepath               => '\\\\fileserver\xendesktop715',
 		sitename                 => 'XD7TestSite',
 		role                     => 'secondary',
 		site_primarycontroller   => 'CXDC01',
-		databaseserver           => 'CLSDB01LI.TESTLAB.COM',
-		licenceserver            => 'LICENCE.TESTLAB.COM',
-		sitedatabasename         => 'SITE_DB',
-		loggingdatabasename      => 'LOG_DB',
-		monitordatabasename      => 'MONITOR_DB',
-		sourcepath               => '\\\\fileserver\xendesktop715',
-		xd7administrator         => 'TESTLAB\Domain Admins',
 		https                    => true,
 		sslCertificateSourcePath => '\\\\fileserver\ssl\cxdc.pfx',
 		sslCertificatePassword   => 'P@ssw0rd',
