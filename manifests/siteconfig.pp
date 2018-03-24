@@ -121,19 +121,23 @@ class xd7deliverycontroller::siteconfig inherits xd7deliverycontroller {
   }
 
   else {
+    #Test 3 times if the XenDesktop site exists before throwing an error
     dsc_xd7waitforsite{ 'WaitForXD7Site':
       dsc_sitename               => $xd7deliverycontroller::sitename,
       dsc_existingcontrollername => $xd7deliverycontroller::site_primarycontroller,
-      dsc_credential             => {
+      dsc_retrycount             => 3,
+      dsc_retryintervalsec       => 10,
+      dsc_psdscrunascredential   => {
         'user'     => $xd7deliverycontroller::setup_svc_username,
         'password' => $xd7deliverycontroller::setup_svc_password
       }
     }
 
+    #Join the secondary controller to the existing XenDesktop site
   ->dsc_xd7controller{ 'XD7ControllerJoin':
       dsc_sitename               => $xd7deliverycontroller::sitename,
       dsc_existingcontrollername => $xd7deliverycontroller::site_primarycontroller,
-      dsc_credential             => {
+      dsc_psdscrunascredential   => {
         'user'     => $xd7deliverycontroller::setup_svc_username,
         'password' => $xd7deliverycontroller::setup_svc_password
       }
