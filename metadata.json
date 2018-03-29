@@ -1,21 +1,21 @@
 {
   "author": "virtualdesktopdevops",
   "dependencies": [
-	{ 
-		"name": "reidmv/unzip", 
+	{
+		"name": "reidmv/unzip",
 		"version_requirement": ">= 0.1.2"
 	},
-	{ 
-		"name": "puppetlabs/registry", 
+	{
+		"name": "puppetlabs/registry",
 		"version_requirement": ">= 1.1.4"
 	},
-	{ 
-		"name": "puppetlabs/dsc", 
-		"version_requirement": ">= 1.4.0"
+	{
+		"name": "virtualdesktopdevops/dsc",
+		"version_requirement": ">= 1.5.0"
 	}
   ],
   "license": "Apache-2.0",
-  "name": "virtualdesktopdevops-xd7mastercontroller",
+  "name": "virtualdesktopdevops-xd7deliverycontroller",
   "operatingsystem_support": [
     {
       "operatingsystem": "windows",
@@ -32,14 +32,18 @@
       "version_requirement": ">= 3.8.0 < 6.0.0"
     }
   ],
-  "source": "http://www.virtualdesktopdevops.com/",
-  "summary": "Xendesktop 7.x Delivery Controller installation & site creation",
+  "source": "https://virtualdesktopdevops.github.io/xd7deliverycontroller/",
+  "issues_url": "https://github.com/virtualdesktopdevops/xd7deliverycontroller/issues",
+  "summary": "Puppet module installing a production grade Citrix XenDesktop 7.x Delivery Controller, including XenDesktop site creation, high availability configuration and administrator rights setup.",
   "tags": [
     "powershell",
     "dsc",
     "xendesktop",
     "citrix",
-    "delivery-controller"
+    "delivery",
+    "controller",
+    "ssl",
+    "alwayson"
   ],
-  "version": "1.0.0"
+  "version": "2.0.0"
 }
