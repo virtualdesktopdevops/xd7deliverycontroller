@@ -10,8 +10,8 @@
 		"version_requirement": ">= 1.1.4"
 	},
 	{
-		"name": "puppetlabs/dsc",
-		"version_requirement": ">= 1.4.0"
+		"name": "virtualdesktopdevops/dsc",
+		"version_requirement": ">= 1.5.0"
 	}
   ],
   "license": "Apache-2.0",

@@ -14,7 +14,7 @@ This module requires SQLServer powershell module v21.0.17199. The module will in
 - From Powershell Gallery if **sqlservermodulesource** parameter is set to **internet**
 - From an enterprise location if **sqlservermodulesource** parameter is set to **offline**. In this case, the ZIP file containing the SQLServer v21.0.17199 (_sqlserver_powershell_21.0.17199.zip_) has to be manually downloaded from Powershell Gallery using the `Save-Module -Name SqlServer -Path <path> -RequiredVersion 21.0.17199` powershell command.
 
-This module requires a custom version of the puppetlabs-dsc module compiled with [XenDesktop Powershell DSC Resource](https://github.com/VirtualEngine/XenDesktop7) as a dependency. Ready to use module provided on [Github](https://github.com/virtualdesktopdevops/puppetlabs-dsc/tree/1.5.0_custom).
+This module requires a custom version of the puppetlabs-dsc module compiled with [XenDesktop Powershell DSC Resource](https://github.com/VirtualEngine/XenDesktop7) as a dependency. Ready to use virtualdesktopdevops/dsc v1.5.0 puppet module provided on [Puppet Forge](https://forge.puppet.com/virtualdesktopdevops/dsc).
 
 ## Change log ##
 
